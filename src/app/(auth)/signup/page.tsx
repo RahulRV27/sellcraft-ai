@@ -28,20 +28,20 @@ export default function SignupPage() {
     <main className="relative flex flex-1 flex-col items-center justify-center px-6 overflow-hidden">
       <div className="absolute inset-0 gradient-subtle pointer-events-none" />
 
-      <div className="relative w-full max-w-lg space-y-10">
+      <div className="relative w-full max-w-lg space-y-6 sm:space-y-10">
         <div className="flex justify-center">
           <Logo />
         </div>
 
         <ScaleIn>
           <Card className="bg-card shadow-soft-lg rounded-2xl border-0">
-            <CardHeader className="text-center px-8 pt-8 pb-6">
+            <CardHeader className="text-center px-5 sm:px-8 pt-6 sm:pt-8 pb-4 sm:pb-6">
               <CardTitle className="text-2xl">Create your account</CardTitle>
               <CardDescription className="text-lg mt-2">
                 Start optimizing your marketplace listings with AI
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6 px-8">
+            <CardContent className="space-y-5 sm:space-y-6 px-5 sm:px-8">
               <Button variant="outline" className="w-full min-h-[46px] text-base border-border bg-muted/30 hover:bg-muted/50" disabled>
                 <svg className="mr-3 h-6 w-6" viewBox="0 0 24 24">
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -88,7 +88,7 @@ export default function SignupPage() {
                 Create Account
               </Button>
             </CardContent>
-            <CardFooter className="justify-center px-8 pb-8 pt-6">
+            <CardFooter className="justify-center px-5 sm:px-8 pb-6 sm:pb-8 pt-4 sm:pt-6">
               <p className="text-base text-muted-foreground">
                 Already have an account?{" "}
                 <Link href="/login" className="text-primary hover:underline font-medium">

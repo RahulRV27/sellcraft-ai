@@ -77,19 +77,19 @@ export default function HomePage() {
               AI
             </span>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <Link
               href="/login"
               className={cn(
-                buttonVariants({ variant: "ghost", size: "default" }),
-                "text-base"
+                buttonVariants({ variant: "ghost", size: "sm" }),
+                "text-sm sm:text-base"
               )}
             >
               Sign In
             </Link>
             <Link
               href="/signup"
-              className={cn(buttonVariants({ size: "default" }), "text-base px-6 shadow-soft-sm hover:shadow-soft-md")}
+              className={cn(buttonVariants({ size: "sm" }), "text-sm sm:text-base px-4 sm:px-6 shadow-soft-sm hover:shadow-soft-md")}
             >
               Get Started
             </Link>
@@ -100,18 +100,18 @@ export default function HomePage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 gradient-subtle" />
-        <div className="relative mx-auto max-w-6xl px-6 py-24 sm:py-32 text-center">
+        <div className="relative mx-auto max-w-6xl px-6 py-16 sm:py-24 lg:py-32 text-center">
           <SlideUp>
             <div className="inline-flex items-center gap-2.5 rounded-full border border-primary/20 bg-primary/5 px-5 py-2 text-base text-primary mb-8">
               <Sparkles className="h-4 w-4" />
               India&apos;s First Seller Intelligence Platform
             </div>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl mb-8">
+            <h1 className="text-3xl font-bold tracking-tight sm:text-5xl lg:text-7xl mb-6 sm:mb-8">
               Your listings are
               <br />
               <span className="text-gradient-pastel">leaving money</span> on the table.
             </h1>
-            <p className="mx-auto max-w-2xl text-xl text-muted-foreground mb-12 leading-relaxed">
+            <p className="mx-auto max-w-2xl text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-12 leading-relaxed">
               SellCraft AI reverse-engineers what sells on Amazon India and
               Flipkart — then generates listings that are algorithmically
               optimized for your platform, category, and buyer persona.
@@ -121,7 +121,7 @@ export default function HomePage() {
                 href="/generate"
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "shadow-soft-md hover:shadow-soft-lg text-lg px-10 h-12"
+                  "shadow-soft-md hover:shadow-soft-lg text-base sm:text-lg px-6 sm:px-10 h-11 sm:h-12"
                 )}
               >
                 Try Free — No Signup
@@ -131,7 +131,7 @@ export default function HomePage() {
                 href="/score"
                 className={cn(
                   buttonVariants({ variant: "outline", size: "lg" }),
-                  "text-lg px-10 h-12"
+                  "text-base sm:text-lg px-6 sm:px-10 h-11 sm:h-12"
                 )}
               >
                 Score My Listing
@@ -147,12 +147,12 @@ export default function HomePage() {
 
       {/* Stats */}
       <section className="border-y border-border">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          <StaggerContainer className="grid grid-cols-2 gap-10 sm:grid-cols-4">
+        <div className="mx-auto max-w-6xl px-6 py-10 sm:py-16">
+          <StaggerContainer className="grid grid-cols-2 gap-6 sm:gap-10 sm:grid-cols-4">
             {stats.map((stat) => (
               <StaggerItem key={stat.label}>
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-gradient-pastel">
+                  <div className="text-2xl sm:text-4xl font-bold text-gradient-pastel">
                     {stat.value}
                   </div>
                   <div className="mt-2 text-base text-muted-foreground">
@@ -167,10 +167,10 @@ export default function HomePage() {
 
       {/* Features */}
       <section className="relative">
-        <div className="mx-auto max-w-6xl px-6 py-24">
+        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
           <FadeIn>
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-5">
+            <div className="text-center mb-10 sm:mb-16">
+              <h2 className="text-2xl font-bold tracking-tight sm:text-4xl lg:text-5xl mb-4 sm:mb-5">
                 Everything you need to
                 <span className="text-gradient-pastel"> sell smarter</span>
               </h2>
@@ -204,12 +204,12 @@ export default function HomePage() {
 
       {/* Platforms */}
       <section className="border-t border-border">
-        <div className="mx-auto max-w-6xl px-6 py-24 text-center">
+        <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24 text-center">
           <FadeIn>
-            <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-5">
+            <h2 className="text-2xl font-bold tracking-tight sm:text-4xl lg:text-5xl mb-4 sm:mb-5">
               Platform-specific, <span className="text-gradient-pastel">not generic</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-xl mx-auto mb-14">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto mb-10 sm:mb-14">
               A listing optimized for &ldquo;marketplaces&rdquo; is optimized for
               none. Every output is tuned to a specific platform&apos;s algorithm,
               format, and buyer behavior.
@@ -217,7 +217,7 @@ export default function HomePage() {
           </FadeIn>
           <div className="flex flex-col sm:flex-row gap-8 justify-center">
             <HoverLift>
-              <div className="flex-1 max-w-sm mx-auto bg-card shadow-soft-md rounded-2xl p-10 transition-all hover:shadow-soft-lg">
+              <div className="flex-1 max-w-sm mx-auto bg-card shadow-soft-md rounded-2xl p-6 sm:p-10 transition-all hover:shadow-soft-lg">
                 <Globe className="h-10 w-10 text-primary mx-auto mb-5" />
                 <h3 className="font-semibold text-xl mb-3">Amazon India</h3>
                 <p className="text-base text-muted-foreground leading-relaxed">
@@ -227,7 +227,7 @@ export default function HomePage() {
               </div>
             </HoverLift>
             <HoverLift>
-              <div className="flex-1 max-w-sm mx-auto bg-card shadow-soft-md rounded-2xl p-10 transition-all hover:shadow-soft-lg">
+              <div className="flex-1 max-w-sm mx-auto bg-card shadow-soft-md rounded-2xl p-6 sm:p-10 transition-all hover:shadow-soft-lg">
                 <Globe className="h-10 w-10 text-primary mx-auto mb-5" />
                 <h3 className="font-semibold text-xl mb-3">Flipkart</h3>
                 <p className="text-base text-muted-foreground leading-relaxed">
@@ -243,12 +243,12 @@ export default function HomePage() {
       {/* CTA */}
       <section className="relative border-t border-border">
         <div className="absolute inset-0 gradient-subtle" />
-        <div className="relative mx-auto max-w-6xl px-6 py-24 text-center">
+        <div className="relative mx-auto max-w-6xl px-6 py-16 sm:py-24 text-center">
           <FadeIn>
-            <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-5">
+            <h2 className="text-2xl font-bold tracking-tight sm:text-4xl lg:text-5xl mb-4 sm:mb-5">
               Ready to <span className="text-gradient-pastel">craft listings that sell</span>?
             </h2>
-            <p className="text-lg text-muted-foreground max-w-lg mx-auto mb-8">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-lg mx-auto mb-8">
               Join thousands of Indian sellers who are already using AI to
               outperform their competition.
             </p>
@@ -256,7 +256,7 @@ export default function HomePage() {
               href="/generate"
               className={cn(
                 buttonVariants({ size: "lg" }),
-                "shadow-soft-md hover:shadow-soft-lg text-lg px-10 h-12"
+                "shadow-soft-md hover:shadow-soft-lg text-base sm:text-lg px-6 sm:px-10 h-11 sm:h-12"
               )}
             >
               Generate Your First Listing
