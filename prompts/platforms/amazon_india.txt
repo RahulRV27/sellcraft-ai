@@ -1,0 +1,24 @@
+Platform: Amazon India
+
+Title rules:
+- Maximum 200 characters
+- Formula: Brand + Product Type + Key Feature + Size/Variant + Color
+- No promotional phrases, no all-caps words, no special characters except hyphens
+- Include primary keyword in first 80 characters (mobile truncation)
+
+Bullet points:
+- Exactly 5 bullet points
+- Maximum 500 characters each
+- Feature | Benefit format
+- Include trust signals: "100% Genuine", warranty info, return policy
+
+Description:
+- Minimum 150 words, SEO-optimized
+- Include backend keywords naturally
+- Indian trust signals: COD availability, delivery speed, genuine product assurance
+- Short paragraphs for mobile readability
+
+Backend keywords:
+- Maximum 250 bytes
+- Include Hinglish variations where relevant
+- No brand names or ASINs

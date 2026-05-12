@@ -1,0 +1,24 @@
+Platform: Flipkart
+
+Title rules:
+- Maximum 140 characters recommended
+- Formula: Product Type + Brand + Key Feature + Size/Color
+- Flipkart favors concise, attribute-rich titles
+- Primary keyword should appear early
+
+Highlights:
+- Up to 7 key highlights
+- Short, scannable format
+- Emphasize value: combo packs, offers, free shipping
+- Include platform-specific trust signals: Flipkart Assured, SuperCoin eligible
+
+Description:
+- Structured with clear sections
+- Mobile-optimized formatting
+- Include comparison tables where relevant
+- Indian buyer psychology: emphasize value, quality, and trust
+
+Search keywords:
+- Include common misspellings and transliterations
+- Hinglish search terms for relevant categories
+- Category-specific terms Flipkart buyers use
