@@ -70,16 +70,16 @@ export default function DashboardPage() {
         description="Welcome to SellCraft AI. Your seller intelligence command center."
       />
 
-      <StaggerContainer className="grid gap-5 grid-cols-2 lg:grid-cols-4 mb-8">
+      <StaggerContainer className="grid gap-3 sm:gap-5 grid-cols-2 lg:grid-cols-4 mb-6 sm:mb-8">
         {stats.map((stat) => (
           <StaggerItem key={stat.label}>
             <Card className="bg-card shadow-soft-md rounded-2xl border-0">
-              <CardContent className="pt-6 pb-5">
-                <div className="flex items-center justify-between mb-3">
-                  <stat.icon className="h-5 w-5 text-primary" />
+              <CardContent className="pt-4 pb-3 sm:pt-6 sm:pb-5">
+                <div className="flex items-center justify-between mb-2 sm:mb-3">
+                  <stat.icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                 </div>
-                <p className="text-3xl font-bold">{stat.value}</p>
-                <p className="text-base text-muted-foreground mt-1.5">{stat.label}</p>
+                <p className="text-xl sm:text-3xl font-bold">{stat.value}</p>
+                <p className="text-xs sm:text-base text-muted-foreground mt-1">{stat.label}</p>
               </CardContent>
             </Card>
           </StaggerItem>
@@ -87,23 +87,23 @@ export default function DashboardPage() {
       </StaggerContainer>
 
       <FadeIn>
-        <h2 className="text-xl font-semibold mb-5">Quick Actions</h2>
+        <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-5">Quick Actions</h2>
       </FadeIn>
-      <StaggerContainer className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-8">
+      <StaggerContainer className="grid gap-3 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3 mb-6 sm:mb-8">
         {quickActions.map((action) => (
           <StaggerItem key={action.href}>
             <HoverLift>
               <Link href={action.href} className="group block">
                 <Card className="bg-card shadow-soft-md rounded-2xl border-0 transition-all duration-300 hover:shadow-soft-lg cursor-pointer h-full">
-                  <CardHeader className="p-6">
-                    <div className={`h-12 w-12 rounded-xl bg-gradient-to-br ${action.gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                      <action.icon className="h-6 w-6 text-primary" />
+                  <CardHeader className="p-4 sm:p-6">
+                    <div className={`h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-gradient-to-br ${action.gradient} flex items-center justify-center mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                      <action.icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                     </div>
-                    <CardTitle className="text-lg flex items-center justify-between">
+                    <CardTitle className="text-base sm:text-lg flex items-center justify-between">
                       {action.title}
-                      <ArrowRight className="h-5 w-5 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+                      <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
                     </CardTitle>
-                    <CardDescription className="text-base mt-1">{action.description}</CardDescription>
+                    <CardDescription className="text-sm sm:text-base mt-1">{action.description}</CardDescription>
                   </CardHeader>
                 </Card>
               </Link>
@@ -113,24 +113,24 @@ export default function DashboardPage() {
       </StaggerContainer>
 
       <FadeIn>
-        <h2 className="text-xl font-semibold mb-5">Research Tools</h2>
+        <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-5">Research Tools</h2>
       </FadeIn>
-      <StaggerContainer className="grid gap-5 sm:grid-cols-2">
+      <StaggerContainer className="grid gap-3 sm:gap-5 sm:grid-cols-2">
         {tools.map((tool) => (
           <StaggerItem key={tool.href}>
             <HoverLift>
               <Link href={tool.href} className="group block">
                 <Card className="bg-card shadow-soft-md rounded-2xl border-0 transition-all duration-300 hover:shadow-soft-lg cursor-pointer">
-                  <CardHeader className="p-6">
-                    <div className="flex items-center gap-5">
-                      <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
-                        <tool.icon className="h-6 w-6 text-primary" />
+                  <CardHeader className="p-4 sm:p-6">
+                    <div className="flex items-center gap-3 sm:gap-5">
+                      <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                        <tool.icon className="h-5 w-5 sm:h-6 sm:w-6 text-primary" />
                       </div>
                       <div className="flex-1">
-                        <CardTitle className="text-lg">{tool.title}</CardTitle>
-                        <CardDescription className="text-base mt-1">{tool.description}</CardDescription>
+                        <CardTitle className="text-base sm:text-lg">{tool.title}</CardTitle>
+                        <CardDescription className="text-sm sm:text-base mt-1">{tool.description}</CardDescription>
                       </div>
-                      <ArrowRight className="h-5 w-5 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 shrink-0" />
+                      <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 shrink-0" />
                     </div>
                   </CardHeader>
                 </Card>

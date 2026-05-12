@@ -180,18 +180,18 @@ export default function HomePage() {
               </p>
             </div>
           </FadeIn>
-          <StaggerContainer className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <StaggerContainer className="grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {features.map((feature) => (
               <StaggerItem key={feature.title}>
                 <HoverLift>
-                  <div className="group bg-card shadow-soft-md rounded-2xl p-8 transition-all duration-300 hover:shadow-soft-lg h-full">
-                    <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
-                      <feature.icon className="h-6 w-6" />
+                  <div className="group bg-card shadow-soft-md rounded-2xl p-5 sm:p-8 transition-all duration-300 hover:shadow-soft-lg h-full">
+                    <div className="mb-3 sm:mb-5 inline-flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
+                      <feature.icon className="h-5 w-5 sm:h-6 sm:w-6" />
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">
+                    <h3 className="text-base sm:text-lg font-semibold mb-1.5 sm:mb-2">
                       {feature.title}
                     </h3>
-                    <p className="text-base text-muted-foreground leading-relaxed">
+                    <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
