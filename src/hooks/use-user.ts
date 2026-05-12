@@ -3,22 +3,58 @@
 import { useEffect } from "react";
 import { useUserStore } from "@/stores/user-store";
 import { createClient } from "@/lib/supabase/client";
+import type { Plan } from "@/lib/constants";
 
 export function useUser() {
-  const { user, plan, usage, setUser } = useUserStore();
+  const { user, plan, usage, setUser, setPlan, setUsage } = useUserStore();
 
   useEffect(() => {
     const supabase = createClient();
-    supabase.auth.getUser().then(({ data: { user: authUser } }) => {
-      if (authUser) {
-        setUser({
-          id: authUser.id,
-          email: authUser.email ?? "",
-          name: authUser.user_metadata?.name ?? null,
+
+    async function fetchUser() {
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      if (!authUser) {
+        setUser(null);
+        return;
+      }
+
+      setUser({
+        id: authUser.id,
+        email: authUser.email ?? "",
+        name: authUser.user_metadata?.name ?? null,
+      });
+
+      const { data: dbUser } = await supabase
+        .from("users")
+        .select("plan, listings_generated, scores_generated")
+        .eq("id", authUser.id)
+        .single();
+
+      if (dbUser) {
+        setPlan(dbUser.plan as Plan);
+        setUsage({
+          listings: dbUser.listings_generated,
+          scores: dbUser.scores_generated,
         });
       }
-    });
-  }, [setUser]);
+    }
+
+    fetchUser();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (session?.user) {
+          fetchUser();
+        } else {
+          setUser(null);
+          setPlan("free");
+          setUsage({ listings: 0, scores: 0 });
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, [setUser, setPlan, setUsage]);
 
   return { user, plan, usage };
 }

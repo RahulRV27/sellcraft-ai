@@ -1,5 +1,6 @@
 import { Logo } from "./logo";
 import { MobileNav } from "./mobile-nav";
+import { LogoutButton } from "./logout-button";
 
 export function Header() {
   return (
@@ -9,6 +10,7 @@ export function Header() {
         <Logo />
       </div>
       <div className="flex-1" />
+      <LogoutButton />
     </header>
   );
 }

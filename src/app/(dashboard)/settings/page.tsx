@@ -1,12 +1,54 @@
 "use client";
 
-import { User, CreditCard, Bell, Shield, Palette, Zap } from "lucide-react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { User, CreditCard, Bell, Shield, Palette, Zap, Trash2, AlertTriangle, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { PageHeader } from "@/components/shared/page-header";
 import { StaggerContainer, StaggerItem } from "@/components/shared/motion";
+import { createClient } from "@/lib/supabase/client";
 
 export default function SettingsPage() {
+  const router = useRouter();
+  const [deletePassword, setDeletePassword] = useState("");
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState("");
+  const [open, setOpen] = useState(false);
+
+  async function handleDeleteAccount() {
+    setDeleteError("");
+    setDeleting(true);
+
+    const res = await fetch("/api/account/delete", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: deletePassword }),
+    });
+
+    if (!res.ok) {
+      const data = await res.json().catch(() => null);
+      setDeleteError(data?.error ?? "Failed to delete account. Please try again.");
+      setDeleting(false);
+      return;
+    }
+
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push("/login");
+  }
+
   return (
     <>
       <PageHeader
@@ -134,6 +176,81 @@ export default function SettingsPage() {
                 <div className="h-10 sm:h-12 rounded-xl border border-border bg-muted/30 px-3 sm:px-4 flex items-center text-sm sm:text-base text-muted-foreground">
                   None selected
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+        </StaggerItem>
+        <StaggerItem className="lg:col-span-2">
+          <Card className="bg-card shadow-soft-md rounded-2xl border-0 border-red-200">
+            <CardHeader className="p-4 sm:p-6">
+              <div className="flex items-center gap-4">
+                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-red-50 flex items-center justify-center">
+                  <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 text-red-500" />
+                </div>
+                <div>
+                  <CardTitle className="text-base sm:text-lg text-red-600">Danger Zone</CardTitle>
+                  <CardDescription className="text-sm sm:text-base mt-0.5">Irreversible actions on your account</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 rounded-xl border border-red-200 bg-red-50/50 p-4">
+                <div>
+                  <p className="text-sm sm:text-base font-medium">Delete Account</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-1">Permanently delete your account and all associated data. This cannot be undone.</p>
+                </div>
+                <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) { setDeletePassword(""); setDeleteError(""); } }}>
+                  <DialogTrigger
+                    render={
+                      <Button
+                        variant="outline"
+                        className="border-red-300 text-red-600 hover:bg-red-50 hover:text-red-700 shrink-0"
+                      />
+                    }
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    Delete Account
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle className="text-red-600">Delete Account</DialogTitle>
+                      <DialogDescription>
+                        This will permanently delete your account, all your listings, keywords, and usage data. This action cannot be undone.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-3 py-2">
+                      <p className="text-sm">
+                        Enter your password to confirm account deletion:
+                      </p>
+                      <Input
+                        type="password"
+                        value={deletePassword}
+                        onChange={(e) => setDeletePassword(e.target.value)}
+                        placeholder="Enter your password"
+                        className="text-sm"
+                      />
+                      {deleteError && (
+                        <p className="text-sm text-red-600">{deleteError}</p>
+                      )}
+                    </div>
+                    <DialogFooter>
+                      <Button
+                        variant="destructive"
+                        disabled={!deletePassword || deleting}
+                        onClick={handleDeleteAccount}
+                      >
+                        {deleting ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Deleting...
+                          </>
+                        ) : (
+                          "Permanently Delete"
+                        )}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
             </CardContent>
           </Card>
