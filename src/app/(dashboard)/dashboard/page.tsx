@@ -148,11 +148,23 @@ export default function DashboardPage() {
         ))}
       </StaggerContainer>
 
-      {listings.length > 0 && (
+      {(loadingListings || listings.length > 0) && (
         <FadeIn>
           <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-5">Recent Listings</h2>
           <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
-            {listings.map((listing) => (
+            {loadingListings ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <Card key={i} className="bg-card shadow-soft-sm rounded-xl border-0">
+                  <CardContent className="flex items-center gap-3 sm:gap-4 py-3 px-4 sm:py-4 sm:px-5">
+                    <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-lg bg-muted animate-pulse shrink-0" />
+                    <div className="flex-1 space-y-2">
+                      <div className="h-4 w-2/3 bg-muted animate-pulse rounded" />
+                      <div className="h-3 w-1/2 bg-muted animate-pulse rounded" />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : listings.map((listing) => (
               <Link key={listing.id} href={`/listings/${listing.id}`} className="block group">
                 <Card className="bg-card shadow-soft-sm rounded-xl border-0 transition-all duration-200 hover:shadow-soft-md">
                   <CardContent className="flex items-center gap-3 sm:gap-4 py-3 px-4 sm:py-4 sm:px-5">
@@ -182,6 +194,7 @@ export default function DashboardPage() {
               </Link>
             ))}
           </div>
+
         </FadeIn>
       )}
 
