@@ -13,6 +13,7 @@ import {
   Zap,
   ArrowRight,
   ShoppingBag,
+  Trash2,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/shared/page-header";
@@ -89,7 +90,26 @@ function formatDate(dateStr: string): string {
 export default function DashboardPage() {
   const { plan, usage } = useUser();
   const [listings, setListings] = useState<RecentListing[]>([]);
+  const [scores, setScores] = useState<RecentListing[]>([]);
   const [loadingListings, setLoadingListings] = useState(true);
+  const [loadingScores, setLoadingScores] = useState(true);
+  const [showAllListings, setShowAllListings] = useState(false);
+  const [showAllScores, setShowAllScores] = useState(false);
+
+  const PREVIEW_COUNT = 3;
+
+  async function handleDelete(id: string, type: "listing" | "score") {
+    try {
+      const res = await fetch(`/api/listings/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        if (type === "listing") {
+          setListings((prev) => prev.filter((l) => l.id !== id));
+        } else {
+          setScores((prev) => prev.filter((s) => s.id !== id));
+        }
+      }
+    } catch {}
+  }
 
   useEffect(() => {
     async function fetchListings() {
@@ -100,12 +120,24 @@ export default function DashboardPage() {
           setListings(data.listings ?? []);
         }
       } catch {
-        // silently fail — stats will still show from user store
       } finally {
         setLoadingListings(false);
       }
     }
+    async function fetchScores() {
+      try {
+        const res = await fetch("/api/listings?type=scores&limit=5");
+        if (res.ok) {
+          const data = await res.json();
+          setScores(data.listings ?? []);
+        }
+      } catch {
+      } finally {
+        setLoadingScores(false);
+      }
+    }
     fetchListings();
+    fetchScores();
   }, []);
 
   const listingLimit = PLAN_LIMITS[plan].listings;
@@ -113,9 +145,8 @@ export default function DashboardPage() {
     ? "Unlimited"
     : String(Math.max(0, listingLimit - usage.listings));
 
-  const scoredListings = listings.filter((l) => l.quality_score !== null);
-  const avgScore = scoredListings.length > 0
-    ? Math.round(scoredListings.reduce((sum, l) => sum + l.quality_score!, 0) / scoredListings.length)
+  const avgScore = scores.length > 0
+    ? Math.round(scores.reduce((sum, l) => sum + l.quality_score!, 0) / scores.length)
     : null;
 
   const stats = [
@@ -151,7 +182,7 @@ export default function DashboardPage() {
       {(loadingListings || listings.length > 0) && (
         <FadeIn>
           <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-5">Recent Listings</h2>
-          <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+          <div className="space-y-2 sm:space-y-3 mb-2 sm:mb-3">
             {loadingListings ? (
               Array.from({ length: 3 }).map((_, i) => (
                 <Card key={i} className="bg-card shadow-soft-sm rounded-xl border-0">
@@ -164,10 +195,10 @@ export default function DashboardPage() {
                   </CardContent>
                 </Card>
               ))
-            ) : listings.map((listing) => (
-              <Link key={listing.id} href={`/listings/${listing.id}`} className="block group">
-                <Card className="bg-card shadow-soft-sm rounded-xl border-0 transition-all duration-200 hover:shadow-soft-md">
-                  <CardContent className="flex items-center gap-3 sm:gap-4 py-3 px-4 sm:py-4 sm:px-5">
+            ) : (showAllListings ? listings : listings.slice(0, PREVIEW_COUNT)).map((listing) => (
+              <Card key={listing.id} className="bg-card shadow-soft-sm rounded-xl border-0 transition-all duration-200 hover:shadow-soft-md group">
+                <CardContent className="flex items-center gap-3 sm:gap-4 py-3 px-4 sm:py-4 sm:px-5">
+                  <Link href={`/listings/${listing.id}`} className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
                     <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
                       <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     </div>
@@ -188,13 +219,89 @@ export default function DashboardPage() {
                         <p className="text-xs text-muted-foreground">Score</p>
                       </div>
                     )}
-                    <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 shrink-0" />
-                  </CardContent>
-                </Card>
-              </Link>
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(listing.id, "listing")}
+                    className="p-1.5 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-50 transition-colors shrink-0 opacity-0 group-hover:opacity-100"
+                    title="Delete listing"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </CardContent>
+              </Card>
             ))}
           </div>
+          {listings.length > PREVIEW_COUNT && (
+            <button
+              onClick={() => setShowAllListings(!showAllListings)}
+              className="text-sm text-primary hover:underline font-medium mb-6 sm:mb-8"
+            >
+              {showAllListings ? "Show less" : `Show all (${listings.length})`}
+            </button>
+          )}
+        </FadeIn>
+      )}
 
+      {(loadingScores || scores.length > 0) && (
+        <FadeIn>
+          <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-5">Recent Scores</h2>
+          <div className="space-y-2 sm:space-y-3 mb-2 sm:mb-3">
+            {loadingScores ? (
+              Array.from({ length: 2 }).map((_, i) => (
+                <Card key={i} className="bg-card shadow-soft-sm rounded-xl border-0">
+                  <CardContent className="flex items-center gap-3 sm:gap-4 py-3 px-4 sm:py-4 sm:px-5">
+                    <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-lg bg-muted animate-pulse shrink-0" />
+                    <div className="flex-1 space-y-2">
+                      <div className="h-4 w-2/3 bg-muted animate-pulse rounded" />
+                      <div className="h-3 w-1/2 bg-muted animate-pulse rounded" />
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (showAllScores ? scores : scores.slice(0, PREVIEW_COUNT)).map((score) => (
+              <Card key={score.id} className="bg-card shadow-soft-sm rounded-xl border-0 transition-all duration-200 hover:shadow-soft-md group">
+                <CardContent className="flex items-center gap-3 sm:gap-4 py-3 px-4 sm:py-4 sm:px-5">
+                  <Link href={`/listings/${score.id}`} className="flex items-center gap-3 sm:gap-4 flex-1 min-w-0">
+                    <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-lg bg-emerald-100 flex items-center justify-center shrink-0 group-hover:bg-emerald-200 transition-colors">
+                      <BarChart3 className="h-4 w-4 sm:h-5 sm:w-5 text-emerald-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm sm:text-base font-medium truncate">
+                        {score.product_name || "Untitled Listing"}
+                      </p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">
+                        {getPlatformName(score.platform)}
+                        {score.category ? ` · ${score.category}` : ""}
+                        {" · "}
+                        {formatDate(score.created_at)}
+                      </p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <p className={`text-sm sm:text-base font-bold ${score.quality_score! >= 80 ? "text-green-600" : score.quality_score! >= 50 ? "text-yellow-600" : "text-red-600"}`}>
+                        {score.quality_score}
+                      </p>
+                      <p className="text-xs text-muted-foreground">Score</p>
+                    </div>
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(score.id, "score")}
+                    className="p-1.5 rounded-lg text-muted-foreground hover:text-red-500 hover:bg-red-50 transition-colors shrink-0 opacity-0 group-hover:opacity-100"
+                    title="Delete score"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+          {scores.length > PREVIEW_COUNT && (
+            <button
+              onClick={() => setShowAllScores(!showAllScores)}
+              className="text-sm text-primary hover:underline font-medium mb-6 sm:mb-8"
+            >
+              {showAllScores ? "Show less" : `Show all (${scores.length})`}
+            </button>
+          )}
         </FadeIn>
       )}
 

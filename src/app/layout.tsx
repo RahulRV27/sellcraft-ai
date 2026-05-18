@@ -11,7 +11,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "SellCraft AI — Seller Intelligence Platform",
+    default: "SellCraft AI - Seller Intelligence Platform",
     template: "%s | SellCraft AI",
   },
   description:

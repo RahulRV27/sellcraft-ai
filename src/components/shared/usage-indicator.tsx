@@ -9,6 +9,8 @@ export function UsageIndicator() {
   const limits = PLAN_LIMITS[plan];
   const listingLimit =
     limits.listings === Infinity ? "Unlimited" : limits.listings;
+  const scoreLimit =
+    limits.scores === Infinity ? "Unlimited" : limits.scores;
 
   return (
     <div className="space-y-3 text-base">
@@ -22,6 +24,12 @@ export function UsageIndicator() {
         <span className="text-muted-foreground">Listings</span>
         <span className="font-medium">
           {usage.listings}/{listingLimit}
+        </span>
+      </div>
+      <div className="flex items-center justify-between">
+        <span className="text-muted-foreground">Scores</span>
+        <span className="font-medium">
+          {usage.scores}/{scoreLimit}
         </span>
       </div>
     </div>

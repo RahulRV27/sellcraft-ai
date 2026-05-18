@@ -22,7 +22,7 @@ export async function createClient() {
             cookieStore.set(name, value, options)
           );
         } catch {
-          // setAll can fail in Server Components — the middleware handles refresh
+          // setAll can fail in Server Components - the middleware handles refresh
         }
       },
     },

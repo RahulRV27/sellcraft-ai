@@ -14,11 +14,20 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url);
   const limit = Math.min(Number(searchParams.get("limit")) || 10, 50);
+  const type = searchParams.get("type");
 
-  const { data: listings, error } = await supabase
+  let query = supabase
     .from("listings")
     .select("id, platform, category, product_name, quality_score, created_at")
-    .eq("user_id", user.id)
+    .eq("user_id", user.id);
+
+  if (type === "scores") {
+    query = query.is("generated_listing", null).not("quality_score", "is", null);
+  } else {
+    query = query.not("generated_listing", "is", null);
+  }
+
+  const { data: listings, error } = await query
     .order("created_at", { ascending: false })
     .limit(limit);
 

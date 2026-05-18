@@ -1,4 +1,4 @@
-# SellCraft AI — Project Instructions
+# SellCraft AI - Project Instructions
 
 Read `docs/CLAUDE-GUIDE.md` for full strategy context, principles, and file index.
 
@@ -14,9 +14,9 @@ Read `docs/CLAUDE-GUIDE.md` for full strategy context, principles, and file inde
 
 ## Commands
 
-- `npm run dev` — Start dev server
-- `npm run build` — Production build
-- `npm run lint` — Run ESLint
+- `npm run dev` - Start dev server
+- `npm run build` - Production build
+- `npm run lint` - Run ESLint
 
 ## Code Conventions
 
@@ -29,11 +29,11 @@ Read `docs/CLAUDE-GUIDE.md` for full strategy context, principles, and file inde
 
 ## Key Directories
 
-- `docs/strategy/` — Strategy docs (read-only reference)
-- `prompts/` — AI prompt templates (base + platform + category + context)
-- `supabase/migrations/` — Database schema
-- `src/app/(dashboard)/` — Dashboard pages (auth-gated)
-- `src/app/(auth)/` — Auth pages
-- `src/components/ui/` — shadcn/ui components (auto-managed, don't edit directly)
-- `src/components/layout/` — Layout components (sidebar, header, mobile-nav)
-- `src/components/shared/` — Shared components (page-header, platform-selector)
+- `docs/strategy/` - Strategy docs (read-only reference)
+- `prompts/` - AI prompt templates (base + platform + category + context)
+- `supabase/migrations/` - Database schema
+- `src/app/(dashboard)/` - Dashboard pages (auth-gated)
+- `src/app/(auth)/` - Auth pages
+- `src/components/ui/` - shadcn/ui components (auto-managed, don't edit directly)
+- `src/components/layout/` - Layout components (sidebar, header, mobile-nav)
+- `src/components/shared/` - Shared components (page-header, platform-selector)

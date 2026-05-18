@@ -113,7 +113,7 @@ export default function HomePage() {
             </h1>
             <p className="mx-auto max-w-2xl text-lg sm:text-xl text-muted-foreground mb-8 sm:mb-12 leading-relaxed">
               SellCraft AI reverse-engineers what sells on Amazon India and
-              Flipkart — then generates listings that are algorithmically
+              Flipkart - then generates listings that are algorithmically
               optimized for your platform, category, and buyer persona.
             </p>
             <div className="flex flex-col gap-4 sm:flex-row sm:justify-center mb-8">
@@ -124,7 +124,7 @@ export default function HomePage() {
                   "shadow-soft-md hover:shadow-soft-lg text-base sm:text-lg px-6 sm:px-10 h-11 sm:h-12"
                 )}
               >
-                Try Free — No Signup
+                Try Free - No Signup
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <Link
@@ -175,7 +175,7 @@ export default function HomePage() {
                 <span className="text-gradient-pastel"> sell smarter</span>
               </h2>
               <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-                Not generic AI writing — data-driven marketplace intelligence
+                Not generic AI writing - data-driven marketplace intelligence
                 built specifically for Indian e-commerce.
               </p>
             </div>
