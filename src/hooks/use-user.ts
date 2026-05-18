@@ -26,15 +26,15 @@ export function useUser() {
 
       const { data: dbUser } = await supabase
         .from("users")
-        .select("plan, listings_generated, scores_generated")
+        .select("plan, listings_used_this_month, scores_used_this_month")
         .eq("id", authUser.id)
         .single();
 
       if (dbUser) {
         setPlan(dbUser.plan as Plan);
         setUsage({
-          listings: dbUser.listings_generated,
-          scores: dbUser.scores_generated,
+          listings: dbUser.listings_used_this_month,
+          scores: dbUser.scores_used_this_month,
         });
       }
     }

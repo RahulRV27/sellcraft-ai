@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Wand2,
@@ -11,17 +12,22 @@ import {
   FileText,
   Zap,
   ArrowRight,
+  ShoppingBag,
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { PageHeader } from "@/components/shared/page-header";
 import { StaggerContainer, StaggerItem, FadeIn, HoverLift } from "@/components/shared/motion";
+import { useUser } from "@/hooks/use-user";
+import { PLAN_LIMITS, PLATFORMS, type PlatformId } from "@/lib/constants";
 
-const stats = [
-  { label: "Listings Generated", value: "0", icon: FileText },
-  { label: "Avg. Quality Score", value: "--", icon: TrendingUp },
-  { label: "Keywords Found", value: "0", icon: Search },
-  { label: "Credits Remaining", value: "10", icon: Zap },
-];
+interface RecentListing {
+  id: string;
+  platform: PlatformId;
+  category: string | null;
+  product_name: string | null;
+  quality_score: number | null;
+  created_at: string;
+}
 
 const quickActions = [
   {
@@ -62,7 +68,63 @@ const tools = [
   },
 ];
 
+function getPlatformName(platformId: PlatformId): string {
+  return PLATFORMS.find((p) => p.id === platformId)?.shortName ?? platformId;
+}
+
+function formatDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60_000);
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60) return `${diffMins}m ago`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays < 7) return `${diffDays}d ago`;
+  return date.toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+}
+
 export default function DashboardPage() {
+  const { plan, usage } = useUser();
+  const [listings, setListings] = useState<RecentListing[]>([]);
+  const [loadingListings, setLoadingListings] = useState(true);
+
+  useEffect(() => {
+    async function fetchListings() {
+      try {
+        const res = await fetch("/api/listings?limit=5");
+        if (res.ok) {
+          const data = await res.json();
+          setListings(data.listings ?? []);
+        }
+      } catch {
+        // silently fail — stats will still show from user store
+      } finally {
+        setLoadingListings(false);
+      }
+    }
+    fetchListings();
+  }, []);
+
+  const listingLimit = PLAN_LIMITS[plan].listings;
+  const creditsRemaining = listingLimit === Infinity
+    ? "Unlimited"
+    : String(Math.max(0, listingLimit - usage.listings));
+
+  const scoredListings = listings.filter((l) => l.quality_score !== null);
+  const avgScore = scoredListings.length > 0
+    ? Math.round(scoredListings.reduce((sum, l) => sum + l.quality_score!, 0) / scoredListings.length)
+    : null;
+
+  const stats = [
+    { label: "Listings This Month", value: String(usage.listings), icon: FileText },
+    { label: "Avg. Quality Score", value: avgScore !== null ? String(avgScore) : "--", icon: TrendingUp },
+    { label: "Total Listings", value: loadingListings ? "..." : String(listings.length), icon: Search },
+    { label: "Credits Remaining", value: creditsRemaining, icon: Zap },
+  ];
+
   return (
     <>
       <PageHeader
@@ -85,6 +147,43 @@ export default function DashboardPage() {
           </StaggerItem>
         ))}
       </StaggerContainer>
+
+      {listings.length > 0 && (
+        <FadeIn>
+          <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-5">Recent Listings</h2>
+          <div className="space-y-2 sm:space-y-3 mb-6 sm:mb-8">
+            {listings.map((listing) => (
+              <Link key={listing.id} href={`/listings/${listing.id}`} className="block group">
+                <Card className="bg-card shadow-soft-sm rounded-xl border-0 transition-all duration-200 hover:shadow-soft-md">
+                  <CardContent className="flex items-center gap-3 sm:gap-4 py-3 px-4 sm:py-4 sm:px-5">
+                    <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 transition-colors">
+                      <ShoppingBag className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm sm:text-base font-medium truncate">
+                        {listing.product_name || "Untitled Listing"}
+                      </p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">
+                        {getPlatformName(listing.platform)}
+                        {listing.category ? ` · ${listing.category}` : ""}
+                        {" · "}
+                        {formatDate(listing.created_at)}
+                      </p>
+                    </div>
+                    {listing.quality_score !== null && (
+                      <div className="text-right shrink-0">
+                        <p className="text-sm sm:text-base font-bold text-primary">{listing.quality_score}</p>
+                        <p className="text-xs text-muted-foreground">Score</p>
+                      </div>
+                    )}
+                    <ArrowRight className="h-4 w-4 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 shrink-0" />
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </FadeIn>
+      )}
 
       <FadeIn>
         <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-5">Quick Actions</h2>
